@@ -5,6 +5,17 @@ import {useNavigate} from 'react-router-dom';
 function SuperAdminNavbar(){
 
     const navigate=useNavigate();
+    const SuperAdminLogout = () => {
+      if (window.localStorage.getItem('Access_Token')) {
+        window.localStorage.removeItem('Access_Token');
+      }
+      if (window.localStorage.getItem('SuperAdmin_Email')) {
+        window.localStorage.removeItem('SuperAdmin_Email');
+      }
+      navigate('/');
+    }
+    
+    
 
     return(
         <Navbar bg="black" expand="lg"  style={{ color:'white'}}>
@@ -20,7 +31,7 @@ function SuperAdminNavbar(){
               
               <Nav.Link href="/SuperAdminSeats" style={{ color:'white',fontSize:'20px'  }}>Seats</Nav.Link>
             </Nav>
-            <Button variant='danger' style={{ color:'white',fontSize:'20px'  }} onClick={()=>navigate('/')}>Log Out</Button>
+            <Button variant='danger' style={{ color:'white',fontSize:'20px'  }} onClick={SuperAdminLogout}>Log Out</Button>
           </Navbar.Collapse>
         </Container>
       </Navbar>
