@@ -78,13 +78,14 @@ function SuperAdminNewAgent() {
         fetchData();
     }, []);
 
-    const SuperDeleteTheAgent=(email)=>{
+    const SuperDeleteTheAgent=async (email)=>{
         setLoading(true)
-        SuperAdminDeleteAgent(email).then(async res=>{
+       await SuperAdminDeleteAgent(email).then(async res=>{
             const responseData = await res.json();
-            if(responseData.status===200){
-                fetchData();
-                setLoading(false)
+            setLoading(false);
+            console.log(responseData)
+            fetchData();
+            if(responseData.status===200){            
             }
             else if(responseData.status===401){
                 setLoading(false)
@@ -116,11 +117,13 @@ function SuperAdminNewAgent() {
                     setDescriptionValue("Email id is already existed with other Agent");
                 }
                 else {
-                    SuperAddAgentWithEmail(inputs.email, inputs.password)
-                        .then((res) => {
+                   await SuperAddAgentWithEmail(inputs.email, inputs.password)
+                        .then(async (res) => {
                             console.log(res);
                             if (res.status === 200) {
-                                SuperAddAgentWithEmailSendEmail(inputs.email, inputs.password)
+                                fetchData();
+                                setLoading(false);
+                               await SuperAddAgentWithEmailSendEmail(inputs.email, inputs.password)
                                     .then(async (res) => {
                                         const ResData=await res.json();
                                         if(ResData.session_status===200){
@@ -134,7 +137,7 @@ function SuperAdminNewAgent() {
                                         }
                                     
                                        
-                                        fetchData();
+                                        
                                    
                                     })
                                     .catch((err) => {
